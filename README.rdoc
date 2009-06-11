@@ -13,6 +13,7 @@ undo is a simple undo plugin for Rails 2. It makes use of dirty updates (feature
 
 <b>What it will do</b> _aka_ <b>TODO:</b>
 * implement a limit to the number of undo actions saved per user
+* make the update work with protected attributes
 
 === User model association and @logged_user
 
