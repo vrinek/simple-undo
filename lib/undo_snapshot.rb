@@ -21,11 +21,10 @@ class UndoSnapshot < ActiveRecord::Base
     when :create
       undoable.destroy
     when :update
-      undoable.update_attributes previous_state
+      save_to undoable, previous_state
     when :destroy
-      created = load_changes.class.new(load_changes.attributes)
-      created.id = load_changes[:id]
-      created.save
+      created = load_changes.class.new
+      save_to created, load_changes.attributes
     end
     
     destroy
@@ -37,5 +36,12 @@ class UndoSnapshot < ActiveRecord::Base
       state[k] = load_changes[k][0]
     }
     return state
+  end
+  
+  def save_to(this, attributes)
+    attributes.keys.each{ |atr|
+      this.send(atr + '=', attributes[atr])
+    }
+    this.save
   end
 end
