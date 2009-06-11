@@ -13,11 +13,11 @@ module UndoHelper
     def snap(&block)
       UndoManager.instance.action = nil
       UndoManager.instance.user = @logged_user
-      UndoManager.instance.toggle = true
+      UndoManager.instance.on
       
       block.call
       
-      UndoManager.instance.toggle = false
+      UndoManager.instance.off
     end
   end
 end

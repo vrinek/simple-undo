@@ -9,4 +9,12 @@ class UndoManager
       this.save_snapshot :cause => cause, :undo_action => @action
     end
   end
+  
+  def on
+    self.toggle = true
+  end
+  
+  def off
+    self.toggle = false
+  end
 end
