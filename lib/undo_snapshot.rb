@@ -1,6 +1,4 @@
 class UndoSnapshot < ActiveRecord::Base
-  extend ActiveSupport::Memoizable
-
   belongs_to :undoable, :polymorphic => true
   belongs_to :undo_action
   validates_presence_of :undo_action_id
@@ -12,9 +10,8 @@ class UndoSnapshot < ActiveRecord::Base
   }
   
   def load_changes
-    Marshal.load(dumped_changes)
+    Marshal.load(ActiveSupport::Base64.decode64(dumped_changes))
   end
-  memoize :load_changes
   
   def undo
     case CAUSES.invert[cause]

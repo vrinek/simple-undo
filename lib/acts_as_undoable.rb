@@ -23,16 +23,14 @@ module Undone
   module InstanceMethods
     def save_snapshot(options = {})
       options.stringify_keys!
-      full = options['cause'] == :destroy
+      things_to_save = ActiveSupport::Base64.encode64(Marshal.dump(options['cause'] == :destroy ? self : self.changes))
       
       UndoSnapshot.create(
-        :dumped_changes => Marshal.dump(full ? self : self.changes),
+        :dumped_changes => things_to_save,
         :undoable => self,
         :cause => UndoSnapshot::CAUSES[options['cause']],
         :undo_action => options['undo_action']
       )
-      
-      return true
     end
 
     def create_with_undo(*args)
