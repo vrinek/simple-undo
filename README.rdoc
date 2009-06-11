@@ -6,13 +6,14 @@ undo is a simple undo plugin for Rails 2. It makes use of dirty updates (feature
 * keep track of changes done to an object (create, update, destroy)
 * changes done to various objects inside a designated block in a controller are saved as a single UndoAction
 * actions are user-specific
+* max undo limit is 1 per user
 
 <b>What it doesn't:</b>
 * redo
 * keep track of relationships between models (except belongs_to associations)
 
 <b>What it will do</b> _aka_ <b>TODO:</b>
-* implement a limit to the number of undo actions saved per user
+* add configuration
 
 === User model association and @logged_user
 
