@@ -5,7 +5,7 @@ class UndoManager
   
   def snap(this, cause)
     if @toggle
-      @action ||= UndoAction.create(:user_id => @user.try(:id))
+      @action ||= UndoAction.create(:user_id => (@user.is_a?(Integer) ? @user : @user.try(:id)))
       this.save_snapshot :cause => cause, :undo_action => @action
     end
   end
