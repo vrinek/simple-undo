@@ -26,8 +26,8 @@ class UndoAction < ActiveRecord::Base
   end
   
   def keep_max_undo_limit
-    while UndoAction.by_user(user).count > MAX_UNDO_LIMIT
-      UndoAction.by_user(user).first.destroy
+    while UndoAction.find_all_by_user_id(user_id).count > MAX_UNDO_LIMIT
+      UndoAction.find_all_by_user_id(user_id).first.destroy
     end
   end
 end
