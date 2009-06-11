@@ -1,5 +1,4 @@
 module UndoHelper
-
   def self.included (base)
     base.extend(UndoMethods)
   end

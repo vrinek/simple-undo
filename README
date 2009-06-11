@@ -1,13 +1,54 @@
-Undo
-====
+= Undo
 
-Introduction goes here.
+undo is a simple undo plugin for Rails 2. It makes use of dirty updates (feature of Rails 2.2 if I recall correctly).
+
+<b>What it does:</b>
+* keep track of changes done to an object (create, update, destroy)
+* changes done to various objects inside a designated block in a controller are saved as a single UndoAction
+* actions are user-specific
+
+<b>What it doesn't:</b>
+* redo
+* keep track of relationships between models (except belongs_to associations)
+
+<b>What it will do</b> _aka_ <b>TODO:</b>
+* implement a limit to the number of undo actions saved per user
+
+=== User model association and @logged_user
+
+This plugin expects your rails app to have a *User* model and a <tt>@logged_user</tt> to be set before calling a snap block.
+If you do not want to use this association just set <tt>@logged_user = 0</tt> before you call a snap block in your controllers.
 
 
-Example
-=======
+= Example
 
-Example goes here.
+Run the necessary migrations:
+  rake db:migrate:undoable
 
+Inside a model:
+  class SomeModel < ActiveRecord::Base
+    acts_as_undoable
+  end
+  
+Inside a controller:
+  class SomeController < ApplicationController
+    undo_methods
+  
+    def update
+      snap do
+        # make some updates
+      end
+    end
+  
+    # undoing the last action of user @logged_user
+    def undo
+      UndoAction.by_user(@logged_user).last.undo
+    end
+  
+    # undoing the last change of a specific item
+    def undo_specific_change
+      @item.undo_snapshots.last.undo_action.undo
+    end
+  end
 
-Copyright (c) 2009 [name of plugin creator], released under the MIT license
+Copyright (c) 2009 Kostas Karachalios, released under the WTFPL license
