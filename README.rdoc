@@ -22,15 +22,19 @@ If you do not want to use this association just set <tt>@logged_user = 0</tt> be
 
 = Example
 
-Run the necessary migrations:
-  rake db:migrate:undoable
+=== Run the necessary migrations:
 
-Inside a model:
+create a new migration
+  ruby script/generate migration add_simple_undo_tables
+  
+copy the contents of <tt>vendor/plugins/simple-undo/db/migrate/add_simple_undo.rb</tt> to the generated migration
+
+=== Inside a model:
   class SomeModel < ActiveRecord::Base
     acts_as_undoable
   end
   
-Inside a controller:
+=== Inside a controller:
   class SomeController < ApplicationController
     undo_methods
   
